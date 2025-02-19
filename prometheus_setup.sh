@@ -23,6 +23,7 @@ PROMETHEUS_VERSION=${1:-latest}
 # Determine the download URL based on the version
 if [ "$PROMETHEUS_VERSION" = "latest" ]; then
     DOWNLOAD_URL=$(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep browser_download_url | grep linux-amd64.tar.gz | cut -d '"' -f 4)
+    PROMETHEUS_VERSION=$(echo "$DOWNLOAD_URL" | grep -oP 'prometheus-\K[0-9.]+(?=\.linux-amd64\.tar\.gz)')
 else
     DOWNLOAD_URL="https://github.com/prometheus/prometheus/releases/download/v$PROMETHEUS_VERSION/prometheus-$PROMETHEUS_VERSION.linux-amd64.tar.gz"
 fi
